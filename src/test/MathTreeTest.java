@@ -1,12 +1,12 @@
 package test;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.LinkedList;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 import mathTree.MathTree;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Tests for the MathTree.java class in the mathTree package.
 
@@ -105,5 +105,102 @@ class MathTreeTest
       
       calcTree.init("7^(8-2-4)+4--5*3");
       assertEquals(68.0, calcTree.solve());
+   }
+
+
+   @Test
+   public void testInit(){
+      boolean t1=true;
+      boolean t2=false;
+      //Test path : [1,2,3,4,8]
+      boolean out1=calcTree.init("4 + 4");
+      assertEquals(out1, t1);
+
+      //Test path : [1,2,3,4,5,6,7]
+      boolean out2=calcTree.init("4 + ");
+      assertEquals(out2, t2);
+
+      //Test path : [1,2,3,6,7]
+      boolean out3=calcTree.init("");
+      assertEquals(out3, t2);
+
+   }
+
+
+   @Test
+   public void testneg2_1()
+   {
+      LinkedList<String> lst = new LinkedList<String>(Arrays.asList("3","-","-","4"));
+      calcTree.remove_neg2(lst);
+      assertEquals(lst.pollFirst(), "3");
+      assertEquals(lst.pollFirst(), "-");
+      assertEquals(lst.pollFirst(), "-4");
+   }
+   @Test
+   public void testneg2_2()
+   {
+      LinkedList<String> lst = new LinkedList<String>(Arrays.asList("3","-","+","4"));
+      calcTree.remove_neg2(lst);
+      assertEquals(lst.pollFirst(), "3");
+      assertEquals(lst.pollFirst(), "-");
+      assertEquals(lst.pollFirst(), "+");
+      assertEquals(lst.pollFirst(), "4");
+   }
+
+   @Test
+   public void test_cleanStrList_sample()
+   {
+      LinkedList<String> lst = new LinkedList<String>(Arrays.asList("(","3","-","2",")","3","+","4"));
+      calcTree.cleanStrList(lst);
+      assertEquals("(",lst.pollFirst());
+      assertEquals("3",lst.pollFirst());
+      assertEquals("-",lst.pollFirst());
+      assertEquals("2",lst.pollFirst());
+      assertEquals(")",lst.pollFirst());
+      assertEquals("*",lst.pollFirst());
+      assertEquals("3",lst.pollFirst());
+      assertEquals("+",lst.pollFirst());
+      assertEquals("4",lst.pollFirst());
+   }
+
+   @Test
+   public void test_cleanStrList_sample2()
+   {
+      LinkedList<String> lst = new LinkedList<String>(Arrays.asList("2","(","-","3","4",")","4"));
+      calcTree.cleanStrList(lst);
+      assertEquals("2",lst.pollFirst());
+      assertEquals("*",lst.pollFirst());
+      assertEquals("(",lst.pollFirst());
+      assertEquals("-",lst.pollFirst());
+      assertEquals("3",lst.pollFirst());
+      assertEquals("4",lst.pollFirst());
+      assertEquals(")",lst.pollFirst());
+      assertEquals("*",lst.pollFirst());
+      assertEquals("4",lst.pollFirst());
+   }
+
+   @Test
+   public void test_cleanStrList_sample3()
+   {
+      LinkedList<String> lst = new LinkedList<String>(Arrays.asList("2"));
+      calcTree.cleanStrList(lst);
+      assertEquals("2",lst.pollFirst());
+   }
+
+   @Test
+   public void test_cleanStrList_sample4(){
+      LinkedList<String> lst = new LinkedList<String>(Arrays.asList("2","(","3",")"));
+      calcTree.cleanStrList(lst);
+      assertEquals("2", lst.pollFirst());
+      assertEquals("*", lst.pollFirst());
+      assertEquals("(", lst.pollFirst());
+      assertEquals("3", lst.pollFirst());
+      assertEquals(")", lst.pollFirst());
+   }
+
+   @Test
+   public void test_cleanStrList_sample5()
+   {
+      LinkedList<String> lst = new LinkedList<String>(Arrays.asList());
    }
 }

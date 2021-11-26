@@ -45,7 +45,21 @@ public class MathTree implements Cloneable
       rootNode = null;
       return false;
    }
-   
+
+   //Check for negative and subtraction signs in the middle of newList.
+   public void remove_neg2(LinkedList<String> newList)
+   {
+      for(int k = 2; k < newList.size(); k++) {
+         if (newList.get(k - 2).equals("-") && newList.get(k - 1).equals("-")
+                 && !newList.get(k).equals("-")) {
+            newList.remove(k - 1);
+            String newStr = "-" + newList.remove(k - 1);
+            newList.add(k - 1, newStr);
+            k--;
+         }
+      }
+   }
+
    /**
     * Cleans the list of string tokens created by the strScanner.
     * Specifically, it discerns between minus and subtraction symbols
@@ -53,7 +67,7 @@ public class MathTree implements Cloneable
     * this by reference so nothing is returned.
     * @param strList
     */
-   private void cleanStrList(LinkedList<String> strList)
+   public void cleanStrList(LinkedList<String> strList)
    {
       //Create a new scanner for the negative sign '-'
       StringScanner negScanner = new StringScanner();
@@ -73,7 +87,7 @@ public class MathTree implements Cloneable
          if(tempStr.length() > 1 && tempStr.contains("-"))
          {  
             newList = negScanner.scan(tempStr);
-            
+            System.out.println(newList);
             //Check for negative sign at beginning of newList.
             if(newList.get(0).equals("-") && !newList.get(1).equals("-"))
             {
@@ -82,18 +96,7 @@ public class MathTree implements Cloneable
                newList.addFirst(newStr);
             }
             
-            //Check for negative and subtraction signs in the middle of newList.
-            for(int k = 2; k < newList.size(); k++)
-            {
-               if(newList.get(k - 2).equals("-") && newList.get(k - 1).equals("-") 
-                     && !newList.get(k).equals("-"))
-               {
-                  newList.remove(k - 1);
-                  String newStr = "-" + newList.remove(k - 1);
-                  newList.add(k - 1, newStr);
-                  k--;
-               }
-            }
+            remove_neg2(newList);
             
             //Replace tempStr in strList with newList.
             strList.remove(i);

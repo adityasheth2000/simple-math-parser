@@ -53,26 +53,20 @@ public class StringScanner implements Cloneable
       String token = "";
       for(int i = 0; i < inputStr.length(); i++) {
          ch = inputStr.charAt(i);
-         
-         if(isDelim(ch)) {
+
+         if (isDelim(ch)) {
             saveToken(token);
             token = "";
-         } else if(specCharSet.contains(ch)) {
+         } else if (specCharSet.contains(ch)) {
             saveToken(token);
             saveToken(Character.toString(ch));
             token = "";
          } else {
             token = token + ch;
          }
-            
       }
-      
       saveToken(token);
-      
-      LinkedList<String> copyTokenList = tokenList;
-      tokenList = new LinkedList();
-      
-      return copyTokenList;
+      return tokenList;
    }
    
    private boolean isDelim(char ch) 
@@ -95,5 +89,5 @@ public class StringScanner implements Cloneable
       
       return clone;
    }
-   
+
 }
